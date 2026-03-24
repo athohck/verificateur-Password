@@ -81,7 +81,7 @@ void compteurCaracteres(){
     int caracteres = 0;
     for (int i = 0; i < len; i++)
     {
-        if (phrase[i >= 'a' && phrase[i] <= 'z'])
+        if (phrase[i] >= 'a' && phrase[i] <= 'z')
         {
             caracteres++;
         }
@@ -104,9 +104,10 @@ void passwordFuiter(){
     password[strcspn(password, "\n")] = '\0';
 
 
-    char *informationFichier = calloc(30, sizeof(char));
+    char *informationFichier = calloc(50, sizeof(char));
     if (informationFichier == NULL)
     {
+        free(password);
         printf("ERREUR: Allocation Dynamique de informationFichier\n");
         return;
     }
@@ -114,11 +115,13 @@ void passwordFuiter(){
     FILE *fichier = fopen("100k-passwords-NCSC.txt", "r");
     if (fichier == NULL)
     {
+        free(password);
+        free(informationFichier);
         printf("Fichier introuvable\n");
         return;
     }
     
-    while (fgets(informationFichier, 30, fichier) != NULL)
+    while (fgets(informationFichier, 50, fichier) != NULL)
     {
         informationFichier[strcspn(informationFichier, "\n")] = '\0';
 
@@ -133,6 +136,7 @@ void passwordFuiter(){
     {
         printf("Password pas sur liste\n");
     }
+    fclose(fichier);
 
 free(password);
 free(informationFichier);
